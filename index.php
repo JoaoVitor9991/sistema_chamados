@@ -26,6 +26,7 @@ if (isset($_GET['editar'])) {
     <h1>Enviar um chamado</h1>
 
     <form method="POST" class="chamados" action="processar.php">
+        <input type="hidden" name="id" value="<?php echo $editar['id'] ?? ''; ?>">
 
         <label for="">Cliente:</label>
         <input type="text" name="cliente" required value = "<?php echo $editar['cliente'] ?? ''?>">
@@ -49,7 +50,7 @@ if (isset($_GET['editar'])) {
             <strong>Problema:</strong> <?php echo $chamado['problema']; ?>
         </p>
         <a href="excluir.php?id=<?php echo $chamado['id']; ?>" onclick="retunr confirm ('Tem certeza que deseja excluir?')">Excluir</a>
-        <a href="index.php?editar=<?php echo $chamado['id']; ?>">Editar</a>
+        <a href="index.php?editar=<?php echo $chamado['id'] ?? ''; ?>">Editar</a>
         <?php endforeach; ?>
 </body>
 </html>
