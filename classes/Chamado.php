@@ -49,6 +49,7 @@ class Chamado {
     }
 
     public static function deletar($id){
+        try {
         $pdo = Conexao::conectar();
 
         $sql = "DELETE FROM chamados where id = :id";
@@ -57,5 +58,32 @@ class Chamado {
 
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        } catch (PDOException $e){
+            die ("Erro ao deletar chamado no banco: " . $e->getMessage());
+        }
+    }
+
+    public function editar(){
+        $pdo = Conexao::conectar();
+
+        $sql = "UPDATE chamados set cliente = :cliente, problema = :problema, prioridade = :prioridade where id = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':cliente', $this->cliente);
+        $stmt->bindValue(':problema', $this->problema);
+        $stmt->bindValue(':prioridade', $this->prioridade);
+        $stmt->bindValue(':id', $this->id);
+        $stmt->execute();
+    }
+
+    public static function buscarporId($id){
+        $pdo = Conexao::conectar();
+
+        $sql = "SELECT * FROM chamados WHERE id = :id"; 
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

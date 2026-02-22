@@ -5,7 +5,14 @@ require_once __DIR__ . '/classes/Chamado.php';
 
 
 $lista = Chamado::listar();
-
+if (isset($_GET['editar'])) {
+    
+    // 2. SÓ AQUI dentro você cria a variável $id
+    $id = $_GET['editar']; 
+    
+    // 3. E usa ela logo em seguida
+    $editar = Chamado::buscarporId($id);
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,10 +28,10 @@ $lista = Chamado::listar();
     <form method="POST" class="chamados" action="processar.php">
 
         <label for="">Cliente:</label>
-        <input type="text" name="cliente" required>
+        <input type="text" name="cliente" required value = "<?php echo $editar['cliente'] ?? ''?>">
 
         <label for="">Descreva o problema</label>
-        <textarea name="problema" id=""></textarea>
+        <textarea name="problema"><?php echo $editar['problema'] ?? ''; ?></textarea>
 
 
         <select name="prioridade">
@@ -41,6 +48,8 @@ $lista = Chamado::listar();
             <strong>Cliente:</strong> <?php echo $chamado['cliente']; ?>
             <strong>Problema:</strong> <?php echo $chamado['problema']; ?>
         </p>
+        <a href="excluir.php?id=<?php echo $chamado['id']; ?>" onclick="retunr confirm ('Tem certeza que deseja excluir?')">Excluir</a>
+        <a href="index.php?editar=<?php echo $chamado['id']; ?>">Editar</a>
         <?php endforeach; ?>
 </body>
 </html>
